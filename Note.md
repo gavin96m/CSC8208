@@ -1,10 +1,26 @@
-[toc]
-
-
-
 ### NBG code
 
-![image-20220302063654013](image-20220302063654013.png)
+Position 1:  Chamber paced
+
+- O = none
+- A = atrium
+- V = ventricle
+- D = dual
+
+Position 2: Chamber sensed
+
+- O = none
+- A = atrium
+- V = ventricle
+- D = dual
+
+Position 3:  Response to sensing
+
+- O = none
+- T = triggered
+- I = inhibited
+- D = dual (triggered and inhibited)
+
 
 Position 4:  Whether rate response is active(R) or disabled(0)
 
