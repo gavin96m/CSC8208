@@ -1,2 +1,3 @@
-def simulate():
-    pass
+class Accelerometer:
+    def simulate():
+        pass
