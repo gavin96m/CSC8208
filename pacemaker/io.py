@@ -1,8 +1,9 @@
-def ferror():
-    pass
+class IO:
+    def ferror():
+        pass
 
-def echo():
-    pass
+    def echo():
+        pass
 
-def fecho():
-    pass
+    def fecho():
+        pass

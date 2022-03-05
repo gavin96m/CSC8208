@@ -1,5 +1,6 @@
-def __init__():
-    pass
+class Pacemaker:
+    def __init__():
+        pass
 
-def get_info():
-    pass
+    def get_info():
+        pass
