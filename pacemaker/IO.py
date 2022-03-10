@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[36]:
+# In[5]:
 
 
 class IO:
@@ -40,24 +40,32 @@ class IO:
                 ,self.VRP, self.ARP, self.Hysteresis, self.PVARP, self.PVARPExtension, self.RateSmoothing, self.ATRDuration, self.ATRFallbackMode,self.ATRFallbackTime]
         
         for par in param:
-            
             if par == None:
-                return 'None'
-
+                print('None')
             else:
-                return int(par)
+                print(int(par))
   
 
 
+# In[9]:
 
 
+io = IO(None , '2' , 0.03 , '4' ,None , 6 , '7' , None , 9 , 10 , None ,  12 , 14 , 15 , None , 17 , 18 ,19 ,None , 21)
 
 
+# In[10]:
 
 
+io.ATRDuration
 
 
+# In[11]:
 
+
+io.check_values()
+
+
+# In[ ]:
 
 
 
