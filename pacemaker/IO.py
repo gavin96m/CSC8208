@@ -45,28 +45,3 @@ class IO:
             else:
                 print(int(par))
   
-
-
-# In[9]:
-
-
-io = IO(None , '2' , 0.03 , '4' ,None , 6 , '7' , None , 9 , 10 , None ,  12 , 14 , 15 , None , 17 , 18 ,19 ,None , 21)
-
-
-# In[10]:
-
-
-io.ATRDuration
-
-
-# In[11]:
-
-
-io.check_values()
-
-
-# In[ ]:
-
-
-
-
