@@ -1,23 +1,21 @@
-import pacemaker, accelerometer
+from unittest import skip
+import pacemaker
 
 class Environment:     
     #Set the unit of time
-    unit_of_time = 0.1
+    _unit_of_time = 0.1
     time = 0
-    accelerometer = False
-    def __init__(self):
+    _length_of_simulation = int
+
+    def __init__(self, length):
         self.pacemaker = pacemaker()
+        self._length_of_simulation = length
 
     def is_finished(self):
-        pass
-
-    def add_accelerometer(self):
-        """ Creates an accelerometer """
-        self.accelerometer = accelerometer()
-
-    def get_accelerometer(self):
-        """ Returns the accelerometer """
-        return(self.accelerometer)
+        if self.time >= self._length_of_simulation:
+            return True
+        else:
+            return False
 
     def get_time(self):
         """ Return current time """
@@ -25,4 +23,7 @@ class Environment:
 
     def advance_time(self):
         """ Basic use of advancing time """
-        self.time += self.unit_of_time
+        self.time += self._unit_of_time
+        if(self.is_finished()):
+            #TODO Add something to end simulation
+            skip
