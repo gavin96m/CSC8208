@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -11,12 +12,16 @@ import time
 import json
 import os
 import base64
+import pacemaker
+from pacemaker.ecg import ECG
+from PIL import Image, ImageTk
 
 
 class appDCM:
 
-    # imageDirectory = "./images"
-    # logoFile = "/.png"
+    imageDirectory = "./"
+    ecg_wrong = "/ecg_wrong.png"
+    ecg_right = "/ecg_right.png"
 
     userDirectory = "./user"
     userloginFile = "/userlogin.json"
@@ -36,7 +41,7 @@ class appDCM:
         self.root.mainloop()
 
 
-    def checkUserDirectory(self, defaultUsername=""):
+    def checkUserDirectory(self, defaultUsername="111"):
         self.jsonUserlogin = {}
         if not os.path.exists(self.userDirectory):
             print("make " + self.userDirectory + " subdirectory")
@@ -96,8 +101,8 @@ class appDCM:
     def rootWindowResize(self):
         self.root.update()
         self.root.minsize(self.root.winfo_reqwidth(), self.root.winfo_reqheight())
-        self.root.geometry("900x750+250+40")
-        #self.root.geometry('%dx%d' % (self.root.winfo_reqwidth(), self.root.winfo_reqheight()))
+        #self.root.geometry('1400x700')
+        self.root.geometry('%dx%d' % (self.root.winfo_reqwidth(), self.root.winfo_reqheight()))
         self.root.resizable(1, 1)
 
 
@@ -158,8 +163,6 @@ class appDCM:
             self.loginButton = ttk.Button(self.loginFrame, text="Login", style="loginButton.TButton",
                                           command=lambda: self.loginUser())
             self.rememberMeButton = ttk.Checkbutton(self.loginFrame, text="Remember Me")
-            # self.smallRegisterButton = ttk.Button(self.loginFrame, text="Register",
-            #                                       command=lambda: self.createRegisterScreen())
 
             self.loginTitle.grid(row=0, columnspan=3, sticky=N)
 
@@ -170,7 +173,6 @@ class appDCM:
 
             self.loginButton.grid(row=3, columnspan=3, sticky=W + E + N + S, pady=10)
             self.rememberMeButton.grid(row=4, column=0, columnspan=2, sticky=W)
-            #self.smallRegisterButton.grid(row=4, column=1, columnspan=2, sticky=E)
 
 
             self.usernameStr = StringVar()
@@ -212,8 +214,7 @@ class appDCM:
                 self.usernameStr.set("")
 
             self.createProgramScreen()
-            self.createEgram1()
-            self.createEgram2()
+
         else:
             messagebox.showerror("Login Error", "Invalid username or password")
 
@@ -247,22 +248,32 @@ class appDCM:
             self.addScreen("programScreen", self.programFrame)
 
             self.createFont("programFont", "TkDefaultFont", 30, "bold")
-            self.programTitle = Label(self.programFrame, text="Pacemaker Monitor",
-                                      font=self.fontDictionary["programFont"])
+            self.programTitle = Label(self.programFrame, text="Pacemaker Monitor", font=self.fontDictionary["programFont"])
             self.programTitle.grid(row=0)
 
             self.notebook = ttk.Notebook(self.programFrame)
             self.notebook.grid(row=1, column=0, padx=0, pady=0, sticky=W + E + N + S)
 
-
             self.paceSettingFrame = Frame(self.notebook)
             self.paceSettingFrame.columnconfigure((1, 3, 5), weight=1)
-            self.notebook.add(self.paceSettingFrame, text="Pace Setting", padding=(10, 10))
-            self.egramFrame = Frame(self.notebook)
-            self.notebook.add(self.egramFrame, text="ECG", padding=(10, 10))
-            #self.aboutAppFrame = Frame(self.notebook)
-            #self.notebook.add(self.aboutAppFrame, text="Board Details", padding=(10, 10))
+            self.notebook.add(self.paceSettingFrame, text="Pace Setting")
 
+            self.egramFrame = Frame(self.notebook)
+            self.notebook.add(self.egramFrame, text="ECG", sticky=W + E + N + S)
+
+            self.wrong = PhotoImage(file=self.imageDirectory + self.ecg_wrong).subsample(1, 1)
+            self.wrongLB = Label(self.egramFrame, image=self.wrong)
+            self.wrongLB.grid(row=0,column=0, pady=5)
+
+            self.right = PhotoImage(file=self.imageDirectory + self.ecg_right).subsample(1, 1)
+            self.rightLB = Label(self.egramFrame, image=self.right)
+            self.rightLB.grid(row=0,column=1, pady=5)
+
+            # yscrollbar = Scrollbar(self.egramFrame)
+            # self.canvas = Canvas(self.egramFrame, bg="#fff", yscrollcommand=yscrollbar.set)
+            # yscrollbar.grid(row=0, column=5, sticky=S + N)
+            # self.canvas.grid(row=0, sticky=tkinter.N + tkinter.S + tkinter.E + tkinter.W)
+            # yscrollbar.config(command=self.canvas.yview)
 
             self.pacingModeFrame = Frame(self.paceSettingFrame)
             self.programModeLabel = Label(self.pacingModeFrame, text="Select Pacing Mode:", pady=10)
@@ -304,36 +315,36 @@ class appDCM:
             self.recoveryTimeFrame = Frame(self.paceSettingFrame)
 
 
-            self.label01 = Label(self.lowerRateLimitFrame, width=18, text="Lower Rate Limit")
-            self.label02 = Label(self.upperRateLimitFrame, width=18, text="Upper Rate Limit")
+            self.label01 = Label(self.lowerRateLimitFrame, width=25, text="Lower Rate Limit")
+            self.label02 = Label(self.upperRateLimitFrame, width=25, text="Upper Rate Limit")
             #self.label03 = Label(self.maximumSensorRateFrame, width=18, text="Maximum Sensor Rate")
-            self.label04 = Label(self.fixedAVDelayFrame, width=18, text="Fixed AV Delay")
-            self.label05 = Label(self.dynamicAVDelayFrame, width=18, text="Dynamic AV Delay")
+            self.label04 = Label(self.fixedAVDelayFrame, width=25, text="Fixed AV Delay")
+            self.label05 = Label(self.dynamicAVDelayFrame, width=25, text="Dynamic AV Delay")
             #self.label06 = Label(self.minimumDynamicAVDelayFrame, width=18, text="Minimum Dynamic\n AV Delay")
-            self.label07 = Label(self.sensedAVDelayOffsetFame, width=18, text="Sensed AV Delay Offset")
-            self.label08 = Label(self.atrialAmplitudeFrame, width=18, text="Atrial Amplitude")
-            self.label09 = Label(self.ventricularAmplitudeFrame, width=18, text="Ventricular Amplitude")
+            self.label07 = Label(self.sensedAVDelayOffsetFame, width=25, text="Sensed AV Delay Offset")
+            self.label08 = Label(self.atrialAmplitudeFrame, width=25, text="Atrial Amplitude")
+            self.label09 = Label(self.ventricularAmplitudeFrame, width=25, text="Ventricular Amplitude")
             #self.label10 = Label(self.atrialAmplitudeUnregulatedFrame, width=18, text="Atrial Amplitude\n Unregulated")
             #self.label11 = Label(self.ventricularAmplitudeUnregulatedFrame, width=18,
             #                     text="Ventricular Amplitude\n Unregulated")
-            self.label12 = Label(self.atrialPulseWidthFrame, width=18, text="Atrial Pulse Width")
-            self.label13 = Label(self.ventricularPulseWidthFrame, width=18, text="Ventricular Pulse Width")
-            self.label14 = Label(self.atrialSensitivityFrame, width=18, text="Atrial Sensitivity")
-            self.label15 = Label(self.ventricularSensitivityFrame, width=18, text="Ventricular Sensitivity")
-            self.label16 = Label(self.VRPFrame, width=18, text="VRP")
-            self.label17 = Label(self.ARPFrame, width=18, text="ARP")
-            self.label18 = Label(self.PVARPFrame, width=18, text="PVARP")
-            self.label19 = Label(self.PVARPExtensionFrame, width=18, text="PVARP Extension")
-            self.label20 = Label(self.hysteresisFrame, width=18, text="Hysteresis")
-            self.label21 = Label(self.rateSmoothingFrame, width=18, text="Rate Smoothing")
-            self.label22 = Label(self.ATRDurationFrame, width=18, text="ATR Duration")
-            self.label23 = Label(self.ATRFallbackModeFrame, width=18, text="ATR Fallback Mode")
-            self.label24 = Label(self.ATRFallbackTimeFrame, width=18, text="ATR Fallback Time")
+            self.label12 = Label(self.atrialPulseWidthFrame, width=25, text="Atrial Pulse Width")
+            self.label13 = Label(self.ventricularPulseWidthFrame, width=25, text="Ventricular Pulse Width")
+            self.label14 = Label(self.atrialSensitivityFrame, width=25, text="Atrial Sensitivity")
+            self.label15 = Label(self.ventricularSensitivityFrame, width=25, text="Ventricular Sensitivity")
+            self.label16 = Label(self.VRPFrame, width=25, text="VRP")
+            self.label17 = Label(self.ARPFrame, width=25, text="ARP")
+            self.label18 = Label(self.PVARPFrame, width=25, text="PVARP")
+            self.label19 = Label(self.PVARPExtensionFrame, width=25, text="PVARP Extension")
+            self.label20 = Label(self.hysteresisFrame, width=25, text="Hysteresis")
+            self.label21 = Label(self.rateSmoothingFrame, width=25, text="Rate Smoothing")
+            self.label22 = Label(self.ATRDurationFrame, width=25, text="ATR Duration")
+            self.label23 = Label(self.ATRFallbackModeFrame, width=25, text="ATR Fallback Mode")
+            self.label24 = Label(self.ATRFallbackTimeFrame, width=25, text="ATR Fallback Time")
             #self.label25 = Label(self.ventricularBlankingFrame, width=18, text="Ventricular Blanking")
             #self.label26 = Label(self.activityThresholdFrame, width=18, text="Activity Threshold")
-            self.label27 = Label(self.reactionTimeFrame, width=18, text="Reaction Time")
-            self.label28 = Label(self.responseFactorFrame, width=18, text="Response Factor")
-            self.label29 = Label(self.recoveryTimeFrame, width=18, text="Recovery Time")
+            self.label27 = Label(self.reactionTimeFrame, width=25, text="Reaction Time")
+            self.label28 = Label(self.responseFactorFrame, width=25, text="Response Factor")
+            self.label29 = Label(self.recoveryTimeFrame, width=25, text="Recovery Time")
 
 
             self.entry01Str = StringVar()
@@ -550,56 +561,56 @@ class appDCM:
             print("program screen created successfully")
             return True
 
-    pulseplot = False
-
-    def change_state(self):
-        if appDCM.pulseplot == True:
-            appDCM.pulseplot = False
-        else:
-            appDCM.pulseplot = True
-
-    # style.use("ggplot")
-    xar = [0, 0.1]
-    yar = [0, 0]
-
-    def createEgram1(self):
-        self.fig = plt.Figure()
-        self.ax = self.fig.add_subplot(211)
-        self.ax.grid()
-        self.line, = self.ax.plot(appDCM.xar, appDCM.yar)
-        self.ax.set_ylim(-1, 1)
-        self.graph = FigureCanvasTkAgg(self.fig, master=self.egramFrame)
-        self.graph.get_tk_widget().pack(side=BOTTOM, fill=X)
-
-        self.stopstartButton1 = ttk.Button(self.egramFrame, text="Start/Stop", command=lambda: self.gui_handler())
-        self.stopstartButton1.pack(side=TOP)
-        self.graph.draw()
-
-    def createEgram2(self):
-        self.fig = plt.Figure()
-        self.ax = self.fig.add_subplot(211)
-        self.ax.grid()
-        self.line, = self.ax.plot(appDCM.xar, appDCM.yar)
-        self.ax.set_ylim(-1, 1)
-        self.graph = FigureCanvasTkAgg(self.fig, master=self.egramFrame)
-        self.graph.get_tk_widget().pack(side=BOTTOM, fill=X)
-
-        self.stopstartButton2 = ttk.Button(self.egramFrame, text="Start/Stop", command=lambda: self.gui_handler())
-        self.stopstartButton2.pack()
-        self.graph.draw()
-
-    def refresh(self):
-        if appDCM.pulseplot == True:
-            appDCM.xar = np.append(appDCM.xar, appDCM.xar[-1] + 0.1)
-            appDCM.yar = np.append(appDCM.yar, np.sin(appDCM.xar[-1]))
-            self.ax.set_xlim(appDCM.xar[-1] - 10, appDCM.xar[-1])
-            self.line.set_data(appDCM.xar, appDCM.yar)
-            self.graph.draw()
-            self.root.after(10, self.refresh)
-
-    def gui_handler(self):
-        self.change_state()
-        self.refresh()
+    # pulseplot = False
+    #
+    # def change_state(self):
+    #     if appDCM.pulseplot == True:
+    #         appDCM.pulseplot = False
+    #     else:
+    #         appDCM.pulseplot = True
+    #
+    # # style.use("ggplot")
+    # xar = [0, 0.1]
+    # yar = [0, 0]
+    #
+    # def createEgram1(self):
+    #     self.fig = plt.Figure()
+    #     self.ax = self.fig.add_subplot(211)
+    #     self.ax.grid()
+    #     self.line, = self.ax.plot(appDCM.xar, appDCM.yar)
+    #     self.ax.set_ylim(-1, 1)
+    #     self.graph = FigureCanvasTkAgg(self.fig, master=self.egramFrame)
+    #     self.graph.get_tk_widget().pack(side=BOTTOM, fill=X)
+    #
+    #     self.stopstartButton1 = ttk.Button(self.egramFrame, text="Start/Stop", command=lambda: self.gui_handler())
+    #     self.stopstartButton1.pack(side=TOP)
+    #     self.graph.draw()
+    #
+    # def createEgram2(self):
+    #     self.fig = plt.Figure()
+    #     self.ax = self.fig.add_subplot(211)
+    #     self.ax.grid()
+    #     self.line, = self.ax.plot(appDCM.xar, appDCM.yar)
+    #     self.ax.set_ylim(-1, 1)
+    #     self.graph = FigureCanvasTkAgg(self.fig, master=self.egramFrame)
+    #     self.graph.get_tk_widget().pack(side=BOTTOM, fill=X)
+    #
+    #     self.stopstartButton2 = ttk.Button(self.egramFrame, text="Start/Stop", command=lambda: self.gui_handler())
+    #     self.stopstartButton2.pack()
+    #     self.graph.draw()
+    #
+    # def refresh(self):
+    #     if appDCM.pulseplot == True:
+    #         appDCM.xar = np.append(appDCM.xar, appDCM.xar[-1] + 0.1)
+    #         appDCM.yar = np.append(appDCM.yar, np.sin(appDCM.xar[-1]))
+    #         self.ax.set_xlim(appDCM.xar[-1] - 10, appDCM.xar[-1])
+    #         self.line.set_data(appDCM.xar, appDCM.yar)
+    #         self.graph.draw()
+    #         self.root.after(10, self.refresh)
+    #
+    # def gui_handler(self):
+    #     self.change_state()
+    #     self.refresh()
 
 
     def displaySetting(self):
@@ -787,3 +798,4 @@ class appDCM:
 
 
 login = appDCM()
+ecg = ECG()
