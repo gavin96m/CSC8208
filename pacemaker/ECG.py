@@ -186,6 +186,7 @@ plt.ylabel("ECG in milli Volts", color = 'b')
 plt.xlim(9, 10.2 )
 plt.ylim(-1.5, 2.5 )
 plt.title('ECG before using Pacemaker', color = 'b')
+plt.savefig("ecg_wrong.png")
 plt.show()
 
 
@@ -218,6 +219,7 @@ plt.ylabel("ECG in milli Volts")
 plt.xlim(9, 10.2)
 plt.ylim(-1.5, 2.5)
 plt.title('ECG after using Pacemaker')
+plt.savefig("ecg_right.png")
 plt.show()
 
 
