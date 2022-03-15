@@ -1,3 +1,4 @@
+from time import sleep
 from unittest import skip
 import pacemaker
 
@@ -8,8 +9,14 @@ class Environment:
     _length_of_simulation = int
 
     def __init__(self, length):
-        self.pacemaker = pacemaker()
+        self.pacemaker = pacemaker.Pacemaker()
         self._length_of_simulation = length
+
+        while(not self.is_finished()):
+            sleep(self._unit_of_time)
+            self.pacemaker.advance()
+            self.advance_time()
+            print(self.get_time())
 
     def is_finished(self):
         if self.time >= self._length_of_simulation:
@@ -24,6 +31,7 @@ class Environment:
     def advance_time(self):
         """ Basic use of advancing time """
         self.time += self._unit_of_time
-        if(self.is_finished()):
-            #TODO Add something to end simulation
-            skip
+
+
+if __name__ == '__main__':
+    environment = Environment(1000)
