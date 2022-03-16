@@ -7,13 +7,15 @@ class Environment:
     _unit_of_time = 0.1
     time = 0
     _length_of_simulation = int
+    #Set how many times faster than real time it should be
+    _sim_speed = 4
 
     def __init__(self, length):
         self.pacemaker = pacemaker.Pacemaker()
         self._length_of_simulation = length
 
         while(not self.is_finished()):
-            sleep(self._unit_of_time)
+            sleep(self._unit_of_time / self._sim_speed)
             self.pacemaker.advance()
             self.advance_time()
             print(self.get_time())
