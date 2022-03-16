@@ -30,11 +30,11 @@ class Battery(object):
         self.change_mode()
         return self.quantity
     
-def change_mode(self):
-        if self.mode == 'DOO' and self._quantity < 300:
-            self.mode = 'VOO'
-        elif self.mode=='DDD' and self._quantity< 300:
-            self.mode= 'VVI'
+    def change_mode(self):
+            if self.mode == 'DOO' and self._quantity < 300:
+                self.mode = 'VOO'
+            elif self.mode=='DDD' and self._quantity< 300:
+                self.mode= 'VVI'
 
 if __name__ == '__main__':
     b1 = Battery(mode='AAT')
