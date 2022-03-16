@@ -84,7 +84,7 @@ TODO
 
 ### Feature
 
-- Heart Test Cases
+- self Test Cases
 
   - Multiple cases (matching multiple common symptoms)
 

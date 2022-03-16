@@ -4,7 +4,7 @@
 # @Software: PyCharm
 class Lead_Object(object):
 
-    def __init__(self, Anode, Cathode, Electrode, Atrial_lead, Ventricular_lead):#
+    def __init__(self, Anode, Cathode, Electrode, Atrial_lead, Ventricular_lead):
         self.Anode = Anode
         self.Cathode = Cathode
         self.Electrode = Electrode

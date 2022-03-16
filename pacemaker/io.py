@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[5]:
-
-
 class IO:
     
     
@@ -44,4 +38,3 @@ class IO:
                 print('None')
             else:
                 print(int(par))
-  
