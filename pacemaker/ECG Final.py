@@ -83,7 +83,7 @@ class ECG:
 
 #take an object from ECG class with the right data
 
-ecg_right = ECG(4 ,6 , 1.6, 0.6,0.12, 0.13, 0.08, 0.09, 0.1, 0.43)
+ecg_right = ECG(0.1,0.05 , 0.1, 0.2,0.06 , 0.12 , 0.08 , 0.15 , 0.11 , 0.10)
 
 
 # # Right ECG
@@ -156,7 +156,7 @@ else:
 
 #take an object from ECG class with the wrong data
 
-ecg_wrong = ECG(4 , 1.5, 2.6, 0.25,0.14, 0.22, 0.13, 0.18, 0.27, 0.5)
+ecg_wrong = ECG(0.5, 0.4, 0.8, 0.11,0.09 , 0.32 , 0.18 , 0.42 , 0.1 , 0.11)
 
 
 # In[9]:
