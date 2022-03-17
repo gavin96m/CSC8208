@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
+import matplotlib.pyplot as plt
+from scipy.misc import electrocardiogram
+import numpy as np
 
 class ECG:
     # Constructor
@@ -77,184 +78,112 @@ class ECG:
     def set_t_time(self, T_time):
         self.T_time = T_time
 
+    def gen_ecg(self):
+        #take an object from ECG class with the right data
 
-# In[2]:
+        ecg_right = ECG(0.1,0.05 , 0.1, 0.2,0.06 , 0.12 , 0.08 , 0.15 , 0.11 , 0.10)
 
 
-#take an object from ECG class with the right data
+        # # Right ECG
 
-ecg_right = ECG(0.1,0.05 , 0.1, 0.2,0.06 , 0.12 , 0.08 , 0.15 , 0.11 , 0.10)
+        duration_time = [0.06 , 0.12 , 0.08 , 0.15 , 0.11 , 0.10]
 
+        dist1 = duration_time[1] - duration_time[0] 
+        dist2 = duration_time[2] - duration_time[1] 
+        dist3 = duration_time[3] - duration_time[2] 
+        dist4 = duration_time[4] - duration_time[3] 
+        dist5 = duration_time[5] - duration_time[4] 
 
-# # Right ECG
+        avg = (dist1 + dist2 + dist3 + dist4 + dist5) / 5
+        avg = avg * 1000
 
-# In[3]:
+        Heart_Rate = avg * 10
 
+        frequency = Heart_Rate / ecg_right.T_time
 
-duration_time = [0.06 , 0.12 , 0.08 , 0.15 , 0.11 , 0.10]
+        print(frequency)
+        
+        ecg = electrocardiogram()
+        
+        time_data = np.arange(ecg.size) / frequency
+        
+        plt.plot(time_data, ecg)
+        plt.xlabel("time in seconds")
+        plt.ylabel("ECG in milli Volts")
+        plt.xlim(9, 10.2)
+        plt.ylim(-1.5, 3)
+        plt.title('ECG after using Pacemaker')
+        plt.show()
 
-dist1 = duration_time[1] - duration_time[0] 
-dist2 = duration_time[2] - duration_time[1] 
-dist3 = duration_time[3] - duration_time[2] 
-dist4 = duration_time[4] - duration_time[3] 
-dist5 = duration_time[5] - duration_time[4] 
+        print(int(Heart_Rate))
 
+        if Heart_Rate > 60 and Heart_Rate < 120:
+            print('Regular')
+            
+        else:
+            print('Irregular')
 
-# In[4]:
 
+        # # Wrong ECG
+        #take an object from ECG class with the wrong data
 
-avg = (dist1 + dist2 + dist3 + dist4 + dist5) / 5
-avg = avg * 1000
+        ecg_wrong = ECG(0.5, 0.4, 0.8, 0.11,0.09 , 0.32 , 0.18 , 0.42 , 0.1 , 0.11)
 
 
-# In[5]:
 
+        duration_time = [0.09 , 0.32 , 0.18 , 0.42 , 0.1 , 0.11]
 
-Heart_Rate = avg * 10
+        dist1 = duration_time[1] - duration_time[0] 
+        dist2 = duration_time[2] - duration_time[1] 
+        dist3 = duration_time[3] - duration_time[2] 
+        dist4 = duration_time[4] - duration_time[3] 
+        dist5 = duration_time[5] - duration_time[4] 
 
+        avg = (dist1 + dist2 + dist3 + dist4 + dist5) / 5
+        avg = avg * 1000
 
-# In[6]:
+        Heart_Rate = avg * 10
 
+        #Calculate the frequency for the wrong data to use it to draw the ECG wave
 
-frequency = Heart_Rate / ecg_right.T_time
+        frequency_wrong = Heart_Rate / ecg_wrong.T_time
 
-frequency
+        print(frequency_wrong)
+        
+        ecg = electrocardiogram()
+        
+        time_data = np.arange(ecg.size) / frequency_wrong
+        
+        plt.plot(time_data, ecg, color = 'r')
+        plt.xlabel("time in seconds"  , color = 'b')
+        plt.ylabel("ECG in milli Volts", color = 'b')
+        plt.xlim(9, 10.2 )
+        plt.ylim(-1.5, 2.5 )
+        plt.title('ECG before using Pacemaker', color = 'b')
+        plt.show()
 
 
-# In[7]:
+        print(int(Heart_Rate))
 
+        if Heart_Rate > 60 and Heart_Rate < 120:
+            print('Regular')
+            
+        else:
+            print('Irregular')
 
-import matplotlib.pyplot as plt
-from scipy.misc import electrocardiogram
-import numpy as np
-  
-ecg = electrocardiogram()
-  
-time_data = np.arange(ecg.size) / frequency
-  
-plt.plot(time_data, ecg)
-plt.xlabel("time in seconds")
-plt.ylabel("ECG in milli Volts")
-plt.xlim(9, 10.2)
-plt.ylim(-1.5, 3)
-plt.title('ECG after using Pacemaker')
-plt.show()
 
-print(int(Heart_Rate))
+        #Display the right data (Volt Rate Values)
 
-if Heart_Rate > 60 and Heart_Rate < 120:
-    print('Regular')
-    
-else:
-    print('Irregular')
+        print('P_waves is: {}'.format(ecg_right.P_waves))
+        print('QRS_waves is: {}'.format(ecg_right.QRS_waves))
+        print('ST_up is: {}'.format(ecg_right.ST_up))
+        print('T_wave is: {}'.format(ecg_right.T_wave))
 
-
-# # Wrong ECG
-
-# In[8]:
-
-
-#take an object from ECG class with the wrong data
-
-ecg_wrong = ECG(0.5, 0.4, 0.8, 0.11,0.09 , 0.32 , 0.18 , 0.42 , 0.1 , 0.11)
-
-
-# In[9]:
-
-
-duration_time = [0.09 , 0.32 , 0.18 , 0.42 , 0.1 , 0.11]
-
-dist1 = duration_time[1] - duration_time[0] 
-dist2 = duration_time[2] - duration_time[1] 
-dist3 = duration_time[3] - duration_time[2] 
-dist4 = duration_time[4] - duration_time[3] 
-dist5 = duration_time[5] - duration_time[4] 
-
-
-# In[10]:
-
-
-avg = (dist1 + dist2 + dist3 + dist4 + dist5) / 5
-avg = avg * 1000
-
-
-# In[11]:
-
-
-Heart_Rate = avg * 10
-
-
-# In[12]:
-
-
-#Calculate the frequency for the wrong data to use it to draw the ECG wave
-
-frequency_wrong = Heart_Rate / ecg_wrong.T_time
-
-frequency_wrong
-
-
-# In[13]:
-
-
-import matplotlib.pyplot as plt
-from scipy.misc import electrocardiogram
-import numpy as np
-  
-ecg = electrocardiogram()
-  
-time_data = np.arange(ecg.size) / frequency_wrong
-  
-plt.plot(time_data, ecg, color = 'r')
-plt.xlabel("time in seconds"  , color = 'b')
-plt.ylabel("ECG in milli Volts", color = 'b')
-plt.xlim(9, 10.2 )
-plt.ylim(-1.5, 2.5 )
-plt.title('ECG before using Pacemaker', color = 'b')
-plt.show()
-
-
-print(int(Heart_Rate))
-
-if Heart_Rate > 60 and Heart_Rate < 120:
-    print('Regular')
-    
-else:
-    print('Irregular')
-
-
-# In[ ]:
-
-
-
-
-
-# In[14]:
-
-
-#Display the right data (Volt Rate Values)
-
-print('P_waves is: {}'.format(ecg_right.P_waves))
-print('QRS_waves is: {}'.format(ecg_right.QRS_waves))
-print('ST_up is: {}'.format(ecg_right.ST_up))
-print('T_wave is: {}'.format(ecg_right.T_wave))
-
-
-# In[15]:
-
-
-#Display the right data (Time Values)
-
-print('P_time is: {}'.format(ecg_right.P_time))
-print('PR_time is: {}'.format(ecg_right.PR_time))
-print('QRS_time is: {}'.format(ecg_right.QRS_time))
-print('ST_time is: {}'.format(ecg_right.ST_time))
-print('T_time is: {}'.format(ecg_right.T_time))
-print('QT_time is: {}'.format(ecg_right.QT_time))
-
-
-# In[ ]:
-
-
-
-
+        #Display the right data (Time Values)
+
+        print('P_time is: {}'.format(ecg_right.P_time))
+        print('PR_time is: {}'.format(ecg_right.PR_time))
+        print('QRS_time is: {}'.format(ecg_right.QRS_time))
+        print('ST_time is: {}'.format(ecg_right.ST_time))
+        print('T_time is: {}'.format(ecg_right.T_time))
+        print('QT_time is: {}'.format(ecg_right.QT_time))
