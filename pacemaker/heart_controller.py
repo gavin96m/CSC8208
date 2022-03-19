@@ -92,14 +92,10 @@ class HeartController:
 
         # higher than both
         # 抑制
-
         # lower than both
         # 不抑制
 
-
         print(pulse_width)
-
-
 
     # def set_mode():
     #     pass

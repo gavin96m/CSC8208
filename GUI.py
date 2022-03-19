@@ -15,8 +15,8 @@ import base64
 import pacemaker
 from PIL import Image, ImageTk
 
-from pacemaker.Battery import Battery
-from pacemaker.ECG import ECG
+from pacemaker.battery import Battery
+from pacemaker.ecg import ECG
 
 
 class appDCM:
