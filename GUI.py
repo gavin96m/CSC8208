@@ -1,19 +1,10 @@
-import tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 import numpy as np
-from matplotlib import pyplot as plt
-import matplotlib.animation as animation
-from matplotlib import style
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
-import time
 import json
 import os
 import base64
-import pacemaker
-from PIL import Image, ImageTk
 
 from pacemaker.Battery import Battery
 from pacemaker.ECG import ECG
