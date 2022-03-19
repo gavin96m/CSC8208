@@ -40,17 +40,30 @@ class InputData:
                 ,self.ventricular_amplitude, self.atrial_pulse_width, self.ventricular_pulse_width, self.atrial_sensitivity, self.ventricular_sensitivity
                 ,self.VRP, self.ARP, self.hysteresis, self.PVARP, self.PVARP_extension, self.rate_smoothing, self.ATR_duration, self.ATR_fallback_mode,self.ATR_fallback_time]
 
+
+        # minimum_dynamic_AV_delay? never use? maximum_sensor
         # int
-        # lower_rate_limit,upper_rate_limit,,fixed_AV_delay,,
-        ## maximum_sensor,minimum_dynamic_AV_delay
+        # lower_rate_limit,upper_rate_limit,,fixed_AV_delay,
+        # VRP, ARP, PVARP, ATR_ duration,  ATR fallback time
+        for param in [self.lower_rate_limit,self.upper_rate_limit,self.fixed_AV_delay,self.VRP,self.ARP,self.PVARP,self.ATR_duration,self.ATR_duration,self.ATR_fallback_time]:
+            self.lower_rate_limit = int(self.lower_rate_limit)
+
+
+        # float
+        # atrial_pulse_width, ventricular_pulse_width
+        # atrial_sensitivity, ventricular_sensitivity
+        for param in [self.atrial_pulse_width,self.ventricular_pulse_width,self.atrial_sensitivity,self.ventricular_sensitivity]:
+
+
 
         # bool
-        # dynamic_AV_delay,
+        # dynamic_AV_delay, atr_fallback_mode
 
         # "OFF" or int
-        # sensed_AV_delay_offset,
+        # sensed_AV_delay_offset, PVARP_extension, rate_smoothing(?有无%)
 
         # "OFF" or float
+        # atrial_amplitude, ventricular_amplitude,
 
 
 

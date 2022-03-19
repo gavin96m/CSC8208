@@ -10,10 +10,6 @@ class Battery(object):
 
     @property
     def quantity(self):
-        if self.mode in ['AAT','VVT','AOO','AAI','VOO','VVI'] and self._quantity < 200:
-            print('Please replace the battery')
-        if self.mode in ['DOO','DDI','DDD','VDD'] and self._quantity < 300:
-            print('Please replace the battery')
         return self._quantity
 
     @quantity.setter
@@ -26,15 +22,8 @@ class Battery(object):
         unit = speed_lookup.get(self.mode)
         self.quantity = self.quantity - unit
         print(f'The battery consumed: {unit} mA.')
-        
-        self.change_mode()
         return self.quantity
-    
-def change_mode(self):
-        if self.mode == 'DOO' and self._quantity < 300:
-            self.mode = 'VOO'
-         elif self.mode=='DDD' and self._quantity< 300:
-            self.mode= 'VVI'
+
 
 if __name__ == '__main__':
     b1 = Battery(mode='AAT')
