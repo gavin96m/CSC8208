@@ -10,8 +10,6 @@ class HeartController:
     # RR_interval = 60000/heart_rate
     # def get_heart_info():
     #     heart_rate = transit_heart_info()
-    #
-    # )
 
     def pace_atrium(self,lower_rate_limit):
         interval = self.calc_interval(lower_rate_limit)
@@ -115,3 +113,8 @@ class HeartController:
 
         interval = 60000 / rate_limit
         return interval
+
+    @staticmethod
+    def calc_heart_rate(interval):
+        heart_rate = 60000 / interval
+        return heart_rate
