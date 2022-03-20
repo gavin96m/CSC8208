@@ -3,20 +3,13 @@
 # @FileName: test.py
 # @Software: PyCharm
 # Description: a basic class for lead object
-class LeadObject():
+class Lead():
 
-    def __init__(self,electrode, atrial_lead, ventricular_lead):
-        self.electrode = electrode
+    def __init__(self, atrial_lead, ventricular_lead, resistance):
+
+        self.resistance = resistance
         self.atrial_lead = atrial_lead
         self.ventricular_lead = ventricular_lead
-
-    @property  # getter
-    def electrode(self):
-        return self.electrode
-
-    @electrode.setter
-    def electrode(self, electrode):
-        self.electrode = electrode
 
     @property  # getter
     def atrial_lead(self):
@@ -34,12 +27,20 @@ class LeadObject():
     def ventricular_lead(self, ventricular_lead):
         self.ventricular_lead = ventricular_lead
 
+    @property  # getter
+    def resistance(self):
+        return self.resistance
+
+    @resistance.setter
+    def resistance(self, resistance):
+        self.resistance = 100
+
     # toString
     def __str__(self):
-        return "%s: %s %s " % ( self.electrode, self.atrial_lead, self.ventricular_lead)#
+        return "%s: %s %s" % (self.atrial_lead, self.ventricular_lead, self.resistance)#
 
 
-s2 = LeadObject('TTJ', 'YYT', 'pp')
+s2 = Lead('TTJ', 'YYT', 'pp')
 s2.electrode = 'TT'
 
 print(s2)

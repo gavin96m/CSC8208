@@ -32,7 +32,7 @@ class Battery(object):
     
 def change_mode(self):
         if self.mode == 'DOO' and self._quantity < 300:
-           return self.mode = 'VOO'
+           return self.mode == 'VOO'
         elif self.mode=='DDD' and self._quantity< 300:
             self.mode= 'VVI'
 

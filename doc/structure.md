@@ -4,8 +4,8 @@
 
 ## Requirement
 
-1. The heart rate must not be too fast 
-2. The heart rate must not be too slow 
+1. The self rate must not be too fast 
+2. The self rate must not be too slow 
 3. The ventricles must contract at a particular interval after the atria contract 
 
 
@@ -19,7 +19,7 @@
 - Detects and provides therapy for bradycardia conditions 
 
 - Provides programmable, single- and dual-chamber, rate-adaptive pacing, both permanent and temporary 
-- May measure physical activity resulting in a sensor indicated rate for pacing the heart
+- May measure physical activity resulting in a sensor indicated rate for pacing the self
 - Provides sensor output data and rate histograms 
 - Provides diagnostic features including 
   - Real-time telemetry markers 
@@ -43,8 +43,8 @@
 ## System Components: Lead System 
 
 - Implanted in the patient 
-- Allows the device to sense intrinsic activity of the heart’s electrical signals 
-- Delivers pacing therapy to the patient’s heart 
+- Allows the device to sense intrinsic activity of the self’s electrical signals 
+- Delivers pacing therapy to the patient’s self 
 - Leads are connected to the pulse generator via its header
 
 
@@ -68,12 +68,12 @@
 > Battery status
 
 # Basic process
-> Class heart controller encapsulates 10 mode calls 
+> Class self controller encapsulates 10 mode calls 
 > 
 > User input / preset other necessary parameters
 1. startup entry is class environment
 2. class IO is responsible for receiving data and forwarding it
-3. class heart controller receives the data and invokes the methods of the specified mode
+3. class self controller receives the data and invokes the methods of the specified mode
 4. the method in class spacemaker is activated and returns data such as stimulation time/voltage by calculation, while choosing whether to activate class accelerometer or not, depending on the situation
 5. 
 - If activated, the specified parameters are passed to lead for processing, depending on the situation.
@@ -83,7 +83,7 @@
 
 # Project Structure
 ## Accelerometer
-> If the heart is too fast/slow, call the corresponding method to return the parameters
+> If the self is too fast/slow, call the corresponding method to return the parameters
 
 
 ## Environment

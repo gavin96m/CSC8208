@@ -5,7 +5,6 @@ import IO
 class HeartController:
     # from parameters import Parameters
 
-
     # heart_rate,
     # RR_interval = 60000/heart_rate
     # def get_heart_info():
@@ -20,8 +19,6 @@ class HeartController:
     def pace_ventricular(self,lower_rate_limit):
         interval = self.calc_interval(lower_rate_limit)
         return interval
-
-
 
     def sense_atrium(data:IO,interval, p_wave, sense_type):
         has_sense = False
