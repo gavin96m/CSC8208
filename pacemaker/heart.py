@@ -1,7 +1,8 @@
 class Heart(object):
+
     # x: time ms / s, y: voltage mV / mm
     def __init__(self, heart_rate, atrial, ventricular, p_amplitude, qrs_height, st_level, t_amplitude,
-                 p_time, pr_time, qrs_time, st_time, t_time):
+                 p_time, pq_time, qrs_time, st_time, t_time):
         # interval = distance from R to R
 
         self.heart_rate = heart_rate
@@ -12,10 +13,11 @@ class Heart(object):
         self.st_level = st_level
         self.t_amplitude = t_amplitude
         self.p_time = p_time
-        self.pr_time = pr_time
+        self.pq_time = pq_time
         self.qrs_time = qrs_time
         self.st_time = st_time
         self.t_time = t_time
+
 
 @property  # getter
 def heart_rate(self):
@@ -82,12 +84,12 @@ def p_time(self, p_time):
     self.p_time = p_time
 
 @property  # getter
-def pr_time(self):
-    return self.pr_time
+def pq_time(self):
+    return self.pq_time
 
-@pr_time.setter
-def pr_time(self, pr_time):
-    self.pr_time = 1 / 2 * self.p_time
+@pq_time.setter
+def pq_time(self, pq_time):
+    self.pq_time = pq_time
 
 @property  # getter
 def qrs_time(self):
@@ -112,48 +114,3 @@ def t_time(self):
 @t_time.setter
 def t_time(self, T_time):
     self.T_time = T_time
-
-def transit_heart_info(self):
-    info = [self.HeartRate, self.P_waves, self.QRS_waves]
-    return info
-
-def amp_info(self):
-    info = [self.p_amplitude, self.qrs_height, self.st_level, self.t_amplitude, ]
-    return info
-
-def time_info(self):
-    info = [self.p_time, self.pr_time, self.qrs_time, self.st_time, self.t_time]
-    return info
-
-    def heart_read(self):
-        print("read file")
-        f = open("../heart_output", "r")
-        heart_file = []
-        print("read")
-        for line in f.readlines():
-            cur_line = line.strip().split(" ")
-            heart_file.append(cur_line[:])
-        print(heart_file)
-        f.close()
-        return heart_file
-
-def heart_arr(self):
-    print("file")
-    f = open("../heart_info", "r")
-    heart_file = []
-    print("read")
-    for line in f.readlines():
-        cur_line = line.strip().split(" ")
-        heart_file.append(cur_line[:])
-    print(heart_file)
-    return heart_file
-
-def main():
-    # right Heart Value
-    ecg_t_info = Heart.heart_info
-    # print("file content")
-    # Heart.heart_arr(Heart)
-
-
-if __name__ == '__main__':
-    main()

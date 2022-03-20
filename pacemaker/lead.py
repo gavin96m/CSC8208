@@ -52,7 +52,7 @@ class Lead:
         p_info=[initial_p, initial_rr]
         # send p waveX
         sleep(initial_rr)
-        return initial_p
+        return p_info
 
     @staticmethod
     def transit_heart_info_r():
@@ -123,7 +123,7 @@ class Lead:
 
     #7.Modify information from heart/ECG
     def trainsit_output_heart(self):
-        # initial_heart_info = Heart.heart_output()
+        # initial_heart_info = Heart.heart_output.txt()
         # return
          pass
 
