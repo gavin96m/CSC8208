@@ -1,39 +1,54 @@
-# @Time    : 2022-03-11 6:48 p.m.
+# @Time    : 2022-03-11 18:22 p.m.
 # @Author  : Xiaoxia Li
-# @FileName: lead_config.py
+# @FileName: lead.py
 # @Software: PyCharm
-from time import sleep
+# Description: a basic class for lead object
+class Lead(object):
+
+    def __init__(self, atrial_lead, ventricular_lead, resistance):
+        self.resistance = resistance
+        self.atrial_lead = atrial_lead
+        self.ventricular_lead = ventricular_lead
+
+    def lead_a(self):
+        return self.atrial_lead
+
+    def lead_v(self):
+        return self.ventricular_lead
+
+    def resistance(self):
+        self.resistance=100
+        return self.resistance
+
+    # toString
+    def __str__(self):
+        return "%s: %s %s" % (self.atrial_lead, self.ventricular_lead, self.resistance)  #
+
+
+def main():
+    # Lead.atrial_lead = "Atrial"
+    # Lead.ventricular_lead = "Ventricular"
+    # s2 = [Lead.resistance1, Lead.atrial_lead, Lead.ventricular_lead]
+    # print(s2)
+
+    if __name__ == '__main__':
+        main()
+
 
 from pacemaker.battery import Battery
-from pacemaker.heart import Heart
 from pacemaker.heart_config import HeartConfig
-from pacemaker.lead_object import Lead
 
-lead_A = "AtrialLead"
-lead_V = "Ventricular"
-A = "Atrial"
-V = "Ventricular"
-D = "Both"
-O = "None"
-I = "Inhibit"
-T = "T"
-pace_A = False
-pace_V = False
-sense_A = False
-sense_V = False
 
 class LeadController:
-
-# Seperate method
     # define lead a
     @staticmethod
     def add_lead_a():
-        return lead_A
+        return Lead.lead_a()
 
     # define lead v
     @staticmethod
     def add_lead_v():
-        return lead_V
+        return Lead.lead_v()
 
     # 1. transit initial heart info from ECG to controller
     @staticmethod
@@ -55,12 +70,13 @@ class LeadController:
     # 2. Receive information from header
     # It can be expressed in terms of amplitude (volts, milliamps)
     # and pulse width (milliseconds), or energy (microjoules)
-    # 起搏脉冲的波形是一个顶部略有下降的方波（如图2．11）。其幅度是指脉冲电压的最大值，一般取5V；其宽度是指脉冲的持续时间，多在0．5～1ms
-    def get_pulse_a(self):
+    @staticmethod
+    def get_pulse_a():
         # TODO
         return ["amplitude", "width"]
 
-    def get_generator_info_v(self):
+    @staticmethod
+    def get_generator_info_v():
         return ["amplitude", "width"]
 
     # 3. stimulate a
@@ -75,12 +91,12 @@ class LeadController:
         self.add_lead_a()
         amplitude = self.get_pulse_a()[0]
         width = self.get_pulse_a()[1]
-        curr_stimulus = amplitude/Lead.resistance
+        curr_stimulus = amplitude/100
         #TODO
         if curr_stimulus > Battery.consume():
             return "ready to stimulate!!!"
 
-    #3. stimulate a
+    # 3. stimulate a
     def stimulate_v(self):
         # pulse_info, resistance, battery
         self.add_lead_v()
@@ -90,3 +106,4 @@ class LeadController:
         #TODO
         if curr_stimulus > Battery.consume():
             return "ready to stimulate!!!"
+
