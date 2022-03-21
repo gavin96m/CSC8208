@@ -55,3 +55,74 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+class HeartConfig(object):
+
+    # define chamber a
+    @staticmethod
+    def transit_chamber_a():
+        return "Atrial"
+
+    # define chamber b
+    @staticmethod
+    def transit_chamber_v():
+        return "Ventricular"
+
+    # transit p value
+    def transit_p(self, i):
+        return self.heart_arr()[i][0]
+
+    # transit q value
+    def transit_qrs(self, i):
+        return self.heart_arr()[i][2]
+
+    # transit pr interval
+    def transit_pr(self, i):
+        return self.heart_arr()[[i]][0]/2
+
+    # calculate rr interval
+    def cal_rr(self, i):
+        arr = self.heart_arr()[i]
+        print(arr)
+        rr_time = 1 / 2 * arr[3] + arr[5] + arr[6] + arr[8] + 1 / 2 * arr[10]
+        print(rr_time)
+        return rr_time
+
+    # calculate pp interval
+    def cal_pp(self, i):
+        arr = self.heart_arr()[i]
+        pp_time = 1 / 2 * arr[1] + arr[3] + arr[5] + arr[6] + 1 / 2 * arr[8]
+        return pp_time
+
+    # read heart information from file
+    @staticmethod
+    def heart_arr():
+        # with open()
+        with open("Pacemaker-CSC8208/heart_info", "r") as f:
+            heart_file = []
+            for line in f.readlines():
+                cur_line = line.strip().split(", ")
+                for idx, val in enumerate(cur_line):
+                    cur_line[idx] = float(val)
+                heart_file.append(cur_line[:])
+        return heart_file
+
+def main():
+    print(HeartConfig.heart_arr())
+    # print(HeartConfig.transit_chamber_a())
+    # arr=[ p_amplitude,  pq_time, qrs_height, qrs_time,st_level,st_time,sleep]
+    # arr = [0.15, 200, 1.5, 120, 0, 150, 530, 0.15, 200, 1.5, 120, 0, 150]  # lower limit 60
+    # arr = [0.05, 400, 0.8, 250, 0, 150, 530, 0.05, 400, 0.8, 250, 0, 150]  # slow 45
+    # arr = [0.15, 120, 1.5, 80, 0, 150, 250, 0.15, 120, 1.5, 80, 0, 150]  # upper limit 60
+    # arr = [0.25, 60, 3.5, 40, 0, 150, 250, 0.25, 60, 3.5, 40, 0, 150]  # faster 120
+    # print(1 / 2 * arr[3], arr[5], arr[6], arr[8], 1 / 2 * arr[10])  # rr
+    # print(1 / 2 * arr[1], arr[3], arr[5], arr[6], 1 / 2 * arr[8])  # pp
+    t1 = HeartConfig.cal_rr(HeartConfig, 0)
+    t2 = HeartConfig.cal_pp(HeartConfig, 0)
+    print(t1, t2)
+    print(60000 / t1)
+
+
+if __name__ == '__main__':
+    main()
