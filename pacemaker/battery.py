@@ -8,39 +8,50 @@ class Battery(object):
         self.mode = mode
         self._quantity = 2000
 
-    @property
-    def quantity(self):
-        if self.mode in ['AAT','VVT','AOO','AAI','VOO','VVI'] and self._quantity < 200:
-            print('Please replace the battery')
-        if self.mode in ['DOO','DDI','DDD','VDD'] and self._quantity < 300:
-            print('Please replace the battery')
-        return self._quantity
+    # init battery 2000
+    @staticmethod
+    def quantity():
+        return 2000
 
-    @quantity.setter
-    def quantity(self, value):
-        self._quantity = value
+    # battery consumption for each mode per time
+    @staticmethod
+    def battery_consumption_mode(mode):
+        consumption = {'AAT': 0.025, 'VVT': 0.025, 'AOO': 0.025, 'AAI': 0.025,
+                       'VOO': 0.025, 'VVI': 0.025, 'DOO': 0.038,
+                       'DDI': 0.038, 'DDD': 0.038}
+        return consumption[mode]
 
-    def consume(self):
-        speed_lookup = {'AAT': 0.025, 'VVT': 0.025, 'AOO': 0.025, 'AAI': 0.025, 'VOO': 0.025, 'VVI': 0.025, 'VDD': 0.038, 'DOO': 0.038, 'DDI': 0.038,
-                        'DDD': 0.038}
-        unit = speed_lookup.get(self.mode)
-        self.quantity = self.quantity - unit
-        print(f'The battery consumed: {unit} mA.')
-        
-        self.change_mode()
-        return self.quantity
-    
-def change_mode(self):
-        if self.mode == 'DOO' and self._quantity < 300:
-           return self.mode == 'VOO'
-        elif self.mode=='DDD' and self._quantity< 300:
-            self.mode= 'VVI'
+    # if single mode < 200. or dual mode < 300, send alarm
+    def battery_low_alarm(self, mode):
+        if mode in ['AAT', 'VVT', 'AOO', 'AAI', 'VOO', 'VVI'] and self.quantity() < 200:
+            return 'Please replace the battery'
+        if mode in ['DOO', 'DDI', 'DDD'] and self.quantity() < 300:
+            return 'Please replace the battery'
+
+    # if dual mode has a lower battery, switch to single mode automatically
+    def battery_low_change(self, mode):
+        if mode == 'DOO' and self.quantity() < 300:
+            return mode == 'VOO'
+        elif mode == 'DDD' and self.quantity() < 300:
+            return mode == 'VVI'
+
+    # calculate battery consumption per time based on mode
+    def battery_consumption(self, mode):
+        mode_consumption = self.battery_consumption_mode(mode)
+        battery_left = self.quantity() - mode_consumption
+        print(f'The battery consumed: {mode_consumption} mA.')
+        self.battery_low_alarm(self, mode)
+        self.battery_low_change(self, mode)
+        return battery_left
+
+
+def main():
+    while Battery.quantity() > 0:
+        time.sleep(1)
+        quantity = Battery.battery_consumption(Battery, "VVT")
+        print(f'current remaining power：{quantity} mA')
+
 
 if __name__ == '__main__':
-    b1 = Battery(mode='AAT')
-    quantity = b1.quantity
+    main()
 
-    while quantity > 0:
-        time.sleep(1)
-        quantity = b1.consume()
-        print(f'current remaining power：{quantity} mA')
