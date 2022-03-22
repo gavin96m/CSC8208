@@ -1,145 +1,148 @@
-# @Time    : 2022-03-12 1:55 a.m.
+# @Time    : 2022-03-11 18:22 p.m.
 # @Author  : Xiaoxia Li
-# @FileName: test.py
+# @FileName: lead.py
 # @Software: PyCharm
-class Lead:
+# Description: a basic class for lead object
 
-    def stimulate(self):
-        pass
 
-    def add_lead_pace(self):
-        pass
+# from pacemaker.battery import Battery
+from heart import HeartConfig as heart_config
 
-    def get_chamber(self):
-        pass
 
-    # get info from heart/input
-    def get_chamber(self):
-        pass
+class Lead(object):
 
-    # Receive information from header
-    # 起搏脉冲的波形是一个顶部略有下降的方波（如图2．11）。其幅度是指脉冲电压的最大值，一般取5V；其宽度是指脉冲的持续时间，多在0．5～1ms
-    def header_info(self):
+    def __init__(self, atrial_lead="atrial_lead", ventricular_lead="ventrial_lead", resistance="resistance"):
+    # def __init__(self,atrial_lead,ventricular_lead,resistance):
+        self.resistance = resistance
+        self.atrial_lead = atrial_lead
+        self.ventricular_lead = ventricular_lead
 
-        pass
+    @staticmethod
+    def lead_a():
+        return "atrial_lead"
 
-    # stimulate
-    def stimulate(self):
-        pass
+    @staticmethod
+    def lead_v():
+        return "ventricular_lead"
 
-    # pacing_therapy
-    # cardiac depolarization
-    #  sense every heartbeat (no under sensing)
-    #  count it only once (no oversensing)
+    @staticmethod
+    def resistance():
+        return 400
 
-    # atrial output pulse
-    def atrial_Output(self):
-        pass
-
-    # ventricular output pulse
-    def ventricular_Output(self):
-        pass
-
-    # Sensing atrial via P wave
-    # 固定频率的短阵快速起搏、递增（或递减）频率的短阵快速起搏、50Hz高频短阵起搏（0．5～3s）等
-    def atrial_Sensing(self, P_waves, AtrialAmplitude):
-            if AtrialAmplitude is None:
-                print("%s None P wave")
-                return
-            elif AtrialAmplitude < 0.2:
-                print("%s P wave is normal")
-                return P_waves == True, AtrialAmplitude
-            else:
-                print("%s P wave is abnormal")
-                return P_waves == False, AtrialAmplitude
-
-    # Sensing ventricular via QRS
-    def ventricular_Sensing(self):
-
-        pass
-
-    # Sensing both A and V
-    def av_Sensing(self, P_waves, QRS_waves):
-        self.atrial_Sensing(P_waves)
-        self.ventricular_Sensing(QRS_waves)
-        pass
-
-    # pacing atrial
-    def atrial_Pacing(self):
-        pass
-
-    # pacing ventricular
-    def ventricular_Pacing(self):
-        pass
-
-    # pacing both A and V
-    def av_Pacing(self):
-        self.atrial_Pacing()
-        self.ventricular_Pacing()
-        pass
-
-    # Inhibit response
-    def inhibit_Response(self):
-        pass
-
-    # Trigger response
-    def trigger_Response(self):
-        pass
-
-    # pacing both A and V
-    def it_Response(self):
-        self.inhibit_Response(self)
-        self.trigger_Response(self)
-        pass
-
-    #  Standard Four-Letter Pacemaker Code
-    # I chamber Paced AVDO
-    def get_chamberPaced(self,chamber):
-        if chamber == "Atrial":
-            return self.atrial_Pacing(self)
-        elif chamber == "Ventricular":
-            return self.ventricular_Pacing()
-        elif chamber == "Both":
-            return self.av_Pacing()
-        else:
-            return "None"
-
-    # II chamber Sensed AVDO
-    # input heart beat
-    # output hear beat
-    def get_chamberSensed(self, chamber):
-        if chamber == "Atrial":
-            return self.atrial_Sensing(self)
-        elif chamber == "Ventricular":
-            return self.ventricular_Sensing(self)
-        elif chamber == "Both":
-            return self.av_Sensing(self)
-        else:
-            return "None"
-
-    # III chamber Sensing Response ITDO
-    def get_chamberResponse(self, mode):
-        if mode == "Inhibit":
-            return self.inhibit_Response()
-        elif mode == "trigger":
-            return self.trigger_Response()
-        elif mode == "ITBoth":
-            return self.it_Response()
-        else:
-            return "None"
-
-    # IV rate modulation
-    def rate_modulation(self):
-        pass
-
-    # discharge pulse
-    def dishcarge_pulse(self):
-        pass
+    # toString
+    def __str__(self):
+        return "%s: %s %s" % (self.atrial_lead, self.ventricular_lead, self.resistance)  #
 
 
 def main():
-    print(Lead.atrial_Sensing(Lead, True, 0.09))
+    # Lead.atrial_lead = "Atrial"
+    # Lead.ventricular_lead = "Ventricular"
+    # s2 = [Lead.resistance1, Lead.atrial_lead, Lead.ventricular_lead]
+    # print(s2)
+
+    if __name__ == '__main__':
+        main()
 
 
-if __name__  == '__main__':
+class LeadController:
+    # define lead a
+    @staticmethod
+    def add_lead_a():
+        return Lead.lead_a()
+
+    # define lead v
+    @staticmethod
+    def add_lead_v():
+        return Lead.lead_v()
+
+    @staticmethod
+    def get_chamber_a():
+        return heart_config.transit_chamber_a()
+
+    # define chamber ventricular
+    @staticmethod
+    def get_chamber_v():
+        return heart_config.transit_chamber_v()
+
+    # 1. transit initial heart info from ECG to controller
+    @staticmethod
+    def transit_heart_info_p(heart_config, i):
+        return heart_config.transit_p(heart_config, i)
+
+    @staticmethod
+    def transit_heart_info_r(heart_config, i):
+        return heart_config.transit_qrs(heart_config, i)
+
+    @staticmethod
+    def transit_heart_info_pp(heart_config, i):
+        return heart_config.cal_pp(heart_config, i)
+
+    @staticmethod
+    def transit_heart_info_rr(heart_config, i):
+        return heart_config.cal_rr(heart_config, i)
+
+    # 2. Receive information from header
+    # It can be expressed in terms of amplitude (volts, milliamps)
+    # and pulse width (milliseconds), or energy (microjoules)
+    @staticmethod
+    def get_pulse_a(pulse_info):
+        return pulse_info
+
+    @staticmethod
+    def get_pulse_v(pulse_info):
+        return pulse_info
+
+    # 3. ready to stimulate a
+    # occurs T peak to before next q, stimulate V myocardial
+    # stronger than normal stimulus can activate the V
+    # threshold ia a minimum amount of energy required to rach threshold and evoke an action potential:volts
+    # defined by  pulse(amplitude<1.5, duration=0.5)
+    # resistant = 400~1200 Ohms
+    # I=V/R
+    def prepare_stimulate_a(self, pulse_info):
+        # pulse_info, resistance, battery
+        amplitude = self.get_pulse_a(pulse_info)[0]
+        width = self.get_pulse_a(pulse_info)[1]
+        curr_stimulus = amplitude / 100
+        # TODO
+        # if curr_stimulus > Battery.consume():R
+        #     return pulse_info
+        return pulse_info
+
+    # 3. stimulate a
+    def prepare_stimulate_v(self, pulse_info):
+        # pulse_info, resistance, battery
+        amplitude = self.get_pulse_v(pulse_info)[0]
+        width = self.get_pulse_v(pulse_info)[1]
+        # TODO
+        # curr_stimulus = amplitude / Lead.resistance
+        # if curr_stimulus > Battery.consume():
+        #     return pulse_info
+        return pulse_info
+
+    def stimulate_a(self, pulse_info):
+        pulse_info = self.get_pulse_a(pulse_info)
+        stimulate_info = self.prepare_stimulate_a(self, pulse_info)
+        return "Stimulating Heart in: " + self.get_chamber_a() + ", with lead: " + self.add_lead_a() \
+               + ", pulse amplitude and width are: " + str(stimulate_info)
+
+    def stimulate_v(self, pulse_info):
+        pulse_info = self.get_pulse_v(pulse_info)
+        stimulate_info = self.prepare_stimulate_v(self, pulse_info)
+        return "Stimulating Heart in: " + self.get_chamber_v() + ", with lead: " + self.add_lead_v() \
+               + ", pulse amplitude and width are: " + str(stimulate_info)
+
+    @staticmethod
+    def get_chamber(chamber):
+        return chamber
+
+def main():
+    print(LeadController.transit_heart_info_p(heart_config, 0))
+    print(LeadController.transit_heart_info_r(heart_config, 0))
+    print(LeadController.transit_heart_info_rr(heart_config, 0))
+    print(LeadController.stimulate_v(LeadController, [3.5, 0.4]))
+    print(LeadController.stimulate_a(LeadController, [3.5, 0.4]))
+
+
+if __name__ == '__main__':
     main()
