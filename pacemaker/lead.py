@@ -99,10 +99,11 @@ class LeadController:
     # defined by  pulse(amplitude<1.5, duration=0.5)
     # resistant = 400~1200 Ohms
     # I=V/R
-    def prepare_stimulate_a(self, pulse_info):
+    @staticmethod
+    def prepare_stimulate_a(pulse_info):
         # pulse_info, resistance, battery
-        amplitude = self.get_pulse_a(pulse_info)[0]
-        width = self.get_pulse_a(pulse_info)[1]
+        amplitude = pulse_info[0]
+        width = pulse_info[1]
         curr_stimulus = amplitude / 100
         # TODO
         # if curr_stimulus > Battery.consume():R
@@ -122,7 +123,7 @@ class LeadController:
 
     def stimulate_a(self, pulse_info):
         pulse_info = self.get_pulse_a(pulse_info)
-        stimulate_info = self.prepare_stimulate_a(self, pulse_info)
+        stimulate_info = self.prepare_stimulate_a(pulse_info)
         return "Stimulating Heart in: " + self.get_chamber_a() + ", with lead: " + self.add_lead_a() \
                + ", pulse amplitude and width are: " + str(stimulate_info)
 

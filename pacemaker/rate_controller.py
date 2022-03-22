@@ -123,95 +123,97 @@ class RateController(object):
             return pacing_consumed_unit
 
 
-# instantiate the object
-simulate_lead = lead.LeadController()
+if __name__ == '__main__':
 
-# Launcher
-sense = RateController()
-pace = RateController()
+    # instantiate the object
+    simulate_lead = lead.LeadController()
 
-# call methods in other classes
-# By passing the lead class object c01 to the sense object
-# the purpose of calling the test_lead method ventricular_Sensing() is achieved
-sense.run_sensing(simulate_lead)
-pace.run_pacing(simulate_lead)
+    # Launcher
+    sense = RateController()
+    pace = RateController()
 
-# initial battery quantity
-battery_size = 2000.0
-# Current battery quantity
-battery = 10.0
-# set battery quantity
-# battery = battery_size
+    # call methods in other classes
+    # By passing the lead class object c01 to the sense object
+    # the purpose of calling the test_lead method ventricular_Sensing() is achieved
+    sense.run_sensing(simulate_lead)
+    pace.run_pacing(simulate_lead)
+
+    # initial battery quantity
+    battery_size = 2000.0
+    # Current battery quantity
+    battery = 10.0
+    # set battery quantity
+    # battery = battery_size
 
 
-while battery > 0:
-    if 0.5 * battery_size < battery <= 1 * battery_size:
-        print('The current power quantity is：%f \t' % battery)
-        # set time interval
-        time.sleep(1)
-        # Call the sensing method in the lead class
-        sensing_unit = sense.run_sensing(simulate_lead)
-        # Select the power consumed by the channel corresponding to the sensing method
-        battery = battery - sensing_unit
-        # Use the data returned by the get_interval() method to change the parameter value
-        time.sleep(1.12)
-        # Call the pacing method in the lead class
-        pacing_unit = pace.run_pacing(simulate_lead)
-        # Select the power consumed by the mode corresponding to the pacing method
-        battery = battery - pacing_unit
-        # battery = battery - 0.02
-        print('The remaining battery is: %f \t The remaining battery is sufficient\n' % battery)
+    while battery > 0:
+        if 0.5 * battery_size < battery <= 1 * battery_size:
+            print('The current power quantity is：%f \t' % battery)
+            # set time interval
+            time.sleep(1)
+            # Call the sensing method in the lead class
+            sensing_unit = sense.run_sensing(simulate_lead)
+            # Select the power consumed by the channel corresponding to the sensing method
+            battery = battery - sensing_unit
+            # Use the data returned by the get_interval() method to change the parameter value
+            time.sleep(1.12)
+            # Call the pacing method in the lead class
+            pacing_unit = pace.run_pacing(simulate_lead)
+            # Select the power consumed by the mode corresponding to the pacing method
+            battery = battery - pacing_unit
+            # battery = battery - 0.02
+            print('The remaining battery is: %f \t The remaining battery is sufficient\n' % battery)
 
-    elif (0.5 * battery_size) >= battery > (0.2 * battery_size):
-        print('Warning: The remaining battery is less than 50%!')
-        # set time interval
-        time.sleep(1)
-        # Call the sensing method in the lead class
-        sensing_unit = sense.run_sensing(simulate_lead)
-        # Select the power consumed by the channel corresponding to the sensing method
-        battery = battery - sensing_unit
-        # Use the data returned by the get_interval() method to change the parameter value
-        time.sleep(1.12)
-        # Call the pacing method in the lead class
-        pacing_unit = pace.run_pacing(simulate_lead)
-        # Select the power consumed by the mode corresponding to the pacing method
-        battery = battery - pacing_unit
-        # battery = battery - 0.02
-        print('The remaining power is: %f \n' % battery)
+        elif (0.5 * battery_size) >= battery > (0.2 * battery_size):
+            print('Warning: The remaining battery is less than 50%!')
+            # set time interval
+            time.sleep(1)
+            # Call the sensing method in the lead class
+            sensing_unit = sense.run_sensing(simulate_lead)
+            # Select the power consumed by the channel corresponding to the sensing method
+            battery = battery - sensing_unit
+            # Use the data returned by the get_interval() method to change the parameter value
+            time.sleep(1.12)
+            # Call the pacing method in the lead class
+            pacing_unit = pace.run_pacing(simulate_lead)
+            # Select the power consumed by the mode corresponding to the pacing method
+            battery = battery - pacing_unit
+            # battery = battery - 0.02
+            print('The remaining power is: %f \n' % battery)
 
-    elif (0.2 * battery_size) >= battery > (0.1 * battery_size):
-        print('Warning2: The remaining power is less than 20%! Please pay attention to the battery power!')
-        # set time interval
-        time.sleep(1)
-        # Call the sensing method in the lead class
-        sensing_unit = sense.run_sensing(simulate_lead)
-        # Select the power consumed by the channel corresponding to the sensing method
-        battery = battery - sensing_unit
-        # Use the data returned by the get_interval() method to change the parameter value
-        time.sleep(1.12)
-        # Call the pacing method in the lead class
-        pacing_unit = pace.run_pacing(simulate_lead)
-        # Select the power consumed by the mode corresponding to the pacing method
-        battery = battery - pacing_unit
-        # battery = battery - 0.02
-        print('The remaining power is: %f \n' % battery)
+        elif (0.2 * battery_size) >= battery > (0.1 * battery_size):
+            print('Warning2: The remaining power is less than 20%! Please pay attention to the battery power!')
+            # set time interval
+            time.sleep(1)
+            # Call the sensing method in the lead class
+            sensing_unit = sense.run_sensing(simulate_lead)
+            # Select the power consumed by the channel corresponding to the sensing method
+            battery = battery - sensing_unit
+            # Use the data returned by the get_interval() method to change the parameter value
+            time.sleep(1.12)
+            # Call the pacing method in the lead class
+            pacing_unit = pace.run_pacing(simulate_lead)
+            # Select the power consumed by the mode corresponding to the pacing method
+            battery = battery - pacing_unit
+            # battery = battery - 0.02
+            print('The remaining power is: %f \n' % battery)
 
-    elif (0.1 * battery_size) >= battery > 0:
-        print('Warning: The remaining power is less than 10%! '
-              'Please replace the battery or charge it as soon as possible!')
-        # set time interval
-        time.sleep(1)
-        # Call the sensing method in the lead class
-        sensing_unit = sense.run_sensing(simulate_lead)
-        print(type(sensing_unit))
-        # Select the power consumed by the channel corresponding to the sensing method
-        battery = battery - sensing_unit
-        # Select the power consumed by the channel corresponding to the sensing method
-        time.sleep(1.12)
-        # Call the pacing method in the lead class
-        pacing_unit = pace.run_pacing(simulate_lead)
-        # Select the power consumed by the mode corresponding to the pacing method
-        battery = battery - pacing_unit
-        # battery = battery - 0.02
-        print('The remaining power is: %f \n' % battery)
-        print('Emergency: battery drained!!!')
+        elif (0.1 * battery_size) >= battery > 0:
+            print('Warning: The remaining power is less than 10%! '
+                  'Please replace the battery or charge it as soon as possible!')
+            # set time interval
+            time.sleep(1)
+            # Call the sensing method in the lead class
+            sensing_unit = sense.run_sensing(simulate_lead)
+            print(type(sensing_unit))
+            # Select the power consumed by the channel corresponding to the sensing method
+            battery = battery - sensing_unit
+            # Select the power consumed by the channel corresponding to the sensing method
+            time.sleep(1.12)
+            # Call the pacing method in the lead class
+            pacing_unit = pace.run_pacing(simulate_lead)
+            # Select the power consumed by the mode corresponding to the pacing method
+            battery = battery - pacing_unit
+            # battery = battery - 0.02
+            print('The remaining power is: %f \n' % battery)
+            print('Emergency: battery drained!!!')
