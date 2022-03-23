@@ -1,6 +1,6 @@
 from urllib import response
 from numpy import char
-import heart_controller, lead, rate_controller, Battery
+import heart_controller, lead, rate_controller, battery
 
 class Pacemaker:
     _accelerometer = False
@@ -22,7 +22,7 @@ class Pacemaker:
 
         self.heart_controller = heart_controller.HearController()
         self.rate_controller = rate_controller.RateController()
-        self.battery = Battery.Battery()
+        self.battery = battery.Battery()
 
         if(paced == 'A' or paced == 'D'):
             self.lead_atrial_pacing = lead.Lead.atrial_Pacing()

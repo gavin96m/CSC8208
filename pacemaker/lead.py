@@ -11,11 +11,11 @@ from heart import HeartConfig as heart_config
 
 class Lead(object):
 
-    def __init__(self, atrial_lead="atrial_lead", ventricular_lead="ventrial_lead", resistance="resistance"):
-    # def __init__(self,atrial_lead,ventricular_lead,resistance):
+    def __init__(self, atrial_lead, ventricular_lead, resistance):
         self.resistance = resistance
         self.atrial_lead = atrial_lead
         self.ventricular_lead = ventricular_lead
+
 
     @staticmethod
     def lead_a():
@@ -64,6 +64,10 @@ class LeadController:
     def get_chamber_v():
         return heart_config.transit_chamber_v()
 
+    @staticmethod
+    def get_chamber_d():
+        return heart_config.transit_chamber_d()
+
     # 1. transit initial heart info from ECG to controller
     @staticmethod
     def transit_heart_info_p(heart_config, i):
@@ -92,38 +96,27 @@ class LeadController:
     def get_pulse_v(pulse_info):
         return pulse_info
 
-    # 3. ready to stimulate a
-    # occurs T peak to before next q, stimulate V myocardial
-    # stronger than normal stimulus can activate the V
-    # threshold ia a minimum amount of energy required to rach threshold and evoke an action potential:volts
-    # defined by  pulse(amplitude<1.5, duration=0.5)
+    # 3. ready to stimulate, calculate
     # resistant = 400~1200 Ohms
     # I=V/R
-    @staticmethod
-    def prepare_stimulate_a(pulse_info):
+    def prepare_stimulate_a(self, pulse_info):
         # pulse_info, resistance, battery
         amplitude = pulse_info[0]
         width = pulse_info[1]
-        curr_stimulus = amplitude / 100
-        # TODO
-        # if curr_stimulus > Battery.consume():R
-        #     return pulse_info
-        return pulse_info
+        curr_stimulus = amplitude / Lead.resistance()
+        return pulse_info, curr_stimulus
 
     # 3. stimulate a
     def prepare_stimulate_v(self, pulse_info):
         # pulse_info, resistance, battery
-        amplitude = self.get_pulse_v(pulse_info)[0]
-        width = self.get_pulse_v(pulse_info)[1]
-        # TODO
-        # curr_stimulus = amplitude / Lead.resistance
-        # if curr_stimulus > Battery.consume():
-        #     return pulse_info
-        return pulse_info
+        amplitude = pulse_info[0]
+        width = pulse_info[1]
+        curr_stimulus = amplitude / Lead.resistance()
+        return pulse_info, curr_stimulus
 
     def stimulate_a(self, pulse_info):
         pulse_info = self.get_pulse_a(pulse_info)
-        stimulate_info = self.prepare_stimulate_a(pulse_info)
+        stimulate_info = self.prepare_stimulate_a(self, pulse_info)
         return "Stimulating Heart in: " + self.get_chamber_a() + ", with lead: " + self.add_lead_a() \
                + ", pulse amplitude and width are: " + str(stimulate_info)
 
@@ -133,9 +126,16 @@ class LeadController:
         return "Stimulating Heart in: " + self.get_chamber_v() + ", with lead: " + self.add_lead_v() \
                + ", pulse amplitude and width are: " + str(stimulate_info)
 
-    @staticmethod
-    def get_chamber(chamber):
-        return chamber
+    def get_chamber(self, chamber):
+        if chamber == "Atrial":
+            return self.get_chamber_a()
+        if chamber == "Ventricular":
+            return self.get_chamber_v()
+        if chamber == "Both":
+            return self.get_chamber_d()
+
+
+
 
 def main():
     print(LeadController.transit_heart_info_p(heart_config, 0))

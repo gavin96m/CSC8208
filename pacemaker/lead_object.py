@@ -2,62 +2,44 @@
 # @Author  : Xiaoxia Li
 # @FileName: test.py
 # @Software: PyCharm
-class Lead_Object(object):
+# Description: a basic class for lead object
+class LeadObject():
 
-    def __init__(self, Anode, Cathode, Electrode, Atrial_lead, Ventricular_lead):#
-        self.Anode = Anode
-        self.Cathode = Cathode
-        self.Electrode = Electrode
-        self.Atrial_lead = Atrial_lead
-        self.Ventricular_lead = Ventricular_lead
-
-    @property  # getter
-    def anode(self):
-        return self.Anode
-
-    @anode.setter
-    def anode(self, Anode):
-        self.Anode = Anode
-
-    @property  # getter
-    def cathode(self):
-        return self.Cathode
-
-    @cathode.setter
-    def cathode(self, Cathode):
-        self.Cathode = Cathode
+    def __init__(self,electrode, atrial_lead, ventricular_lead):
+        self.electrode = electrode
+        self.atrial_lead = atrial_lead
+        self.ventricular_lead = ventricular_lead
 
     @property  # getter
     def electrode(self):
-        return self.Electrode
+        return self.electrode
 
     @electrode.setter
-    def electrode(self, Electrode):
-        self.Electrode = Electrode
+    def electrode(self, electrode):
+        self.electrode = electrode
 
     @property  # getter
     def atrial_lead(self):
-        return self.Atrial_lead
+        return self.atrial_lead
 
     @atrial_lead.setter
-    def atrial_lead(self, Atrial_lead):
-        self.Atrial_lead = Atrial_lead
+    def atrial_lead(self, atrial_lead):
+        self.atrial_lead = atrial_lead
 
     @property  # getter
     def ventricular_lead(self):
-        return self.Ventricular_lead
+        return self.ventricular_lead
 
     @ventricular_lead.setter
-    def ventricular_lead(self, Ventricular_lead):
-        self.Ventricular_lead = Ventricular_lead
+    def ventricular_lead(self, ventricular_lead):
+        self.ventricular_lead = ventricular_lead
 
     # toString
     def __str__(self):
-        return "%s: %s %s %s %s" % (self.Anode, self.Cathode, self.Electrode, self.Atrial_lead, self.Ventricular_lead)#
+        return "%s: %s %s " % ( self.electrode, self.atrial_lead, self.ventricular_lead)#
 
 
-s2 = Lead_Object('Tom', 'Jerry', 'TTJ', 'YYT', 'pp')
-s2.Anode = 'TT'
-s2.Cathode = 'JJ'
+s2 = LeadObject('TTJ', 'YYT', 'pp')
+s2.electrode = 'TT'
 
 print(s2)

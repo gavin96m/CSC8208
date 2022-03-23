@@ -15,8 +15,10 @@ import base64
 import pacemaker
 from PIL import Image, ImageTk
 
-from pacemaker.Battery import Battery
+from user.user import User
+from pacemaker.battery import Battery
 from pacemaker.ECG import ECG
+
 
 
 class appDCM:
@@ -311,8 +313,8 @@ class appDCM:
             self.ATRDurationFrame = Frame(self.paceSettingFrame)
             self.ATRFallbackModeFrame = Frame(self.paceSettingFrame)
             self.ATRFallbackTimeFrame = Frame(self.paceSettingFrame)
-            #self.ventricularBlankingFrame = Frame(self.paceSettingFrame)
-            #self.activityThresholdFrame = Frame(self.paceSettingFrame)
+            self.ventricularBlankingFrame = Frame(self.paceSettingFrame)
+            self.atrialBlankingFrame = Frame(self.paceSettingFrame)
             self.reactionTimeFrame = Frame(self.paceSettingFrame)
             self.responseFactorFrame = Frame(self.paceSettingFrame)
             self.recoveryTimeFrame = Frame(self.paceSettingFrame)
@@ -343,8 +345,8 @@ class appDCM:
             self.label22 = Label(self.ATRDurationFrame, width=25, text="ATR Duration")
             self.label23 = Label(self.ATRFallbackModeFrame, width=25, text="ATR Fallback Mode")
             self.label24 = Label(self.ATRFallbackTimeFrame, width=25, text="ATR Fallback Time")
-            #self.label25 = Label(self.ventricularBlankingFrame, width=18, text="Ventricular Blanking")
-            #self.label26 = Label(self.activityThresholdFrame, width=18, text="Activity Threshold")
+            self.label25 = Label(self.ventricularBlankingFrame, width=18, text="Ventricular Blanking")
+            self.label26 = Label(self.atrialBlankingFrame, width=18, text="Atrial Blanking")
             self.label27 = Label(self.reactionTimeFrame, width=25, text="Reaction Time")
             self.label28 = Label(self.responseFactorFrame, width=25, text="Response Factor")
             self.label29 = Label(self.recoveryTimeFrame, width=25, text="Recovery Time")
@@ -432,18 +434,18 @@ class appDCM:
                                        range(90, 176, 5)), width=8, textvariable=self.entry20Str)
             self.entry21 = Spinbox(self.rateSmoothingFrame, state="readonly",
                                    values=["OFF"] + list(range(3, 24, 3)) + [25], width=8, textvariable=self.entry21Str)
-            self.entry22 = Spinbox(self.ATRDurationFrame, state="readonly", values=["OFF", "ON"], width=8,
+            self.entry22 = Spinbox(self.ATRDurationFrame, state="readonly", values=[10] + list(range(20, 100, 20)) + list(range(100, 2100, 100)), width=8,
                                    textvariable=self.entry22Str)
             self.entry23 = Spinbox(self.ATRFallbackModeFrame, state="readonly",
-                                   values=[10] + list(range(20, 100, 20)) + list(range(100, 2100, 100)), width=8,
+                                   values=["OFF", "ON"], width=8,
                                    textvariable=self.entry23Str)
             self.entry24 = Spinbox(self.ATRFallbackTimeFrame, state="readonly", values=list(range(1, 6, 1)), width=8,
                                    textvariable=self.entry24Str)
-            #self.entry25 = Spinbox(self.ventricularBlankingFrame, state="readonly", values=[30, 40, 50, 60], width=8,
-            #                       textvariable=self.entry25Str)
-            #self.entry26 = Spinbox(self.activityThresholdFrame, state="readonly",
-            #                      values=["V-Low", "Low", "Med-Low", "Med", "Med-High", "High", "V-High"], width=8,
-            #                      textvariable=self.entry26Str)
+            self.entry25 = Spinbox(self.ventricularBlankingFrame, state="readonly", values=[30, 40, 50, 60], width=8,
+                                  textvariable=self.entry25Str)
+            self.entry26 = Spinbox(self.atrialBlankingFrame, state="readonly",
+                                 values=[30,40,50,60], width=8,
+                                 textvariable=self.entry26Str)
             self.entry27 = Spinbox(self.reactionTimeFrame, state="readonly", value=list(range(10, 60, 10)), width=8,
                                    textvariable=self.entry27Str)
             self.entry28 = Spinbox(self.responseFactorFrame, state="readonly", value=list(range(1, 17, 1)), width=8,
@@ -476,8 +478,8 @@ class appDCM:
             self.label22.grid(row=0, column=0, padx=5, pady=5, sticky=W)
             self.label23.grid(row=0, column=0, padx=5, pady=5, sticky=W)
             self.label24.grid(row=0, column=0, padx=5, pady=5, sticky=W)
-            #self.label25.grid(row=0, column=0, padx=5, pady=5, sticky=W)
-            #self.label26.grid(row=0, column=0, padx=5, pady=5, sticky=W)
+            self.label25.grid(row=0, column=0, padx=5, pady=5, sticky=W)
+            self.label26.grid(row=0, column=0, padx=5, pady=5, sticky=W)
             self.label27.grid(row=0, column=0, padx=5, pady=5, sticky=W)
             self.label28.grid(row=0, column=0, padx=5, pady=5, sticky=W)
             self.label29.grid(row=0, column=0, padx=5, pady=5, sticky=W)
@@ -506,8 +508,8 @@ class appDCM:
             self.entry22.grid(row=0, column=1, sticky=E)
             self.entry23.grid(row=0, column=1, sticky=E)
             self.entry24.grid(row=0, column=1, sticky=E)
-            #self.entry25.grid(row=0, column=1, sticky=E)
-            #self.entry26.grid(row=0, column=1, sticky=E)
+            self.entry25.grid(row=0, column=1, sticky=E)
+            self.entry26.grid(row=0, column=1, sticky=E)
             self.entry27.grid(row=0, column=1, sticky=E)
             self.entry28.grid(row=0, column=1, sticky=E)
             self.entry29.grid(row=0, column=1, sticky=E)
@@ -538,8 +540,8 @@ class appDCM:
             self.ATRDurationFrame.grid(row=2, column=2)
             self.ATRFallbackModeFrame.grid(row=3, column=2)
             self.ATRFallbackTimeFrame.grid(row=4, column=2)
-            #self.ventricularBlankingFrame.grid(row=5, column=2)
-            #self.activityThresholdFrame.grid(row=6, column=2)
+            self.ventricularBlankingFrame.grid(row=5, column=2)
+            self.atrialBlankingFrame.grid(row=6, column=2)
             self.reactionTimeFrame.grid(row=5, column=2)
             self.responseFactorFrame.grid(row=6, column=2)
             self.recoveryTimeFrame.grid(row=7, column=2)
@@ -598,8 +600,8 @@ class appDCM:
         print(self.label22.cget("text"), self.entry22Str.get())
         print(self.label23.cget("text"), self.entry23Str.get())
         print(self.label24.cget("text"), self.entry24Str.get())
-        #print(self.label25.cget("text"), self.entry25Str.get())
-        #print(self.label26.cget("text"), self.entry26Str.get())
+        print(self.label25.cget("text"), self.entry25Str.get())
+        print(self.label26.cget("text"), self.entry26Str.get())
         print(self.label27.cget("text"), self.entry27Str.get())
         print(self.label28.cget("text"), self.entry28Str.get())
         print(self.label29.cget("text"), self.entry29Str.get())
@@ -637,8 +639,8 @@ class appDCM:
                 self.entry22Str.set(self.jsonUserData["entry22"])
                 self.entry23Str.set(self.jsonUserData["entry23"])
                 self.entry24Str.set(self.jsonUserData["entry24"])
-                #self.entry25Str.set(self.jsonUserData["entry25"])
-                #self.entry26Str.set(self.jsonUserData["entry26"])
+                self.entry25Str.set(self.jsonUserData["entry25"])
+                self.entry26Str.set(self.jsonUserData["entry26"])
                 self.entry27Str.set(self.jsonUserData["entry27"])
                 self.entry28Str.set(self.jsonUserData["entry28"])
                 self.entry29Str.set(self.jsonUserData["entry29"])
@@ -670,8 +672,8 @@ class appDCM:
             self.entry22Str.set("OFF")
             self.entry23Str.set("20")
             self.entry24Str.set("1")
-            #self.entry25Str.set("40")
-            #self.entry26Str.set("Med")
+            self.entry25Str.set("40")
+            self.entry26Str.set("40")
             self.entry27Str.set("30")
             self.entry28Str.set("8")
             self.entry29Str.set("5")
@@ -708,8 +710,8 @@ class appDCM:
             self.jsonUserData["entry22"] = self.entry22Str.get()
             self.jsonUserData["entry23"] = self.entry23Str.get()
             self.jsonUserData["entry24"] = self.entry24Str.get()
-            #self.jsonUserData["entry25"] = self.entry25Str.get()
-            #self.jsonUserData["entry26"] = self.entry26Str.get()
+            self.jsonUserData["entry25"] = self.entry25Str.get()
+            self.jsonUserData["entry26"] = self.entry26Str.get()
             self.jsonUserData["entry27"] = self.entry27Str.get()
             self.jsonUserData["entry28"] = self.entry28Str.get()
             self.jsonUserData["entry29"] = self.entry29Str.get()
@@ -742,8 +744,8 @@ class appDCM:
         self.entry22Str.set("OFF")
         self.entry23Str.set("20")
         self.entry24Str.set("1")
-        #self.entry25Str.set("40")
-        #self.entry26Str.set("Med")
+        self.entry25Str.set("40")
+        self.entry26Str.set("40")
         self.entry27Str.set("30")
         self.entry28Str.set("8")
         self.entry29Str.set("5")
@@ -757,7 +759,8 @@ class appDCM:
 
 
 login = appDCM()
-ecg = ECG()
+user = User("111",)
+# ecg = ECG()
 
 
 

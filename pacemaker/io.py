@@ -4,7 +4,7 @@
 import json
 # In[5]:
 
-str_file = "./111.json"
+str_file = "../user/111.json"
 
 class IO:
     @staticmethod
@@ -42,6 +42,8 @@ class IO:
         update_data["reaction_time"]= int(data["entry27"])
         update_data["response_factor"]= int(data["entry28"])
         update_data["recovery_time"]= int(data["entry29"])
+        update_data["atrial_blanking"] = int(data["entry26"])
+        update_data["ventricular_blanking"] = int(data["entry25"])
         return update_data
 
     @staticmethod
