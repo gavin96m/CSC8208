@@ -198,8 +198,8 @@ def set_mode(self,mode):
             thread1.start()
             thread2.start()
 
-        elif mode == "DDD":
-#             TODO
+#         elif mode == "DDD":
+# #             TODO
 
 
 

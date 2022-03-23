@@ -214,4 +214,4 @@ class HeartController:
             pacemaker_obj.trigger(lead_v, pulse_info)
             return 2
 
-    def DDD(self, pacemaker):
+    # def DDD(self, pacemaker):
